@@ -34,7 +34,7 @@ def test_browser_full_workflow(tmp_path):
             page.get_by_role('button',name='Open settings.txt',exact=True).click()
             expect(page.get_by_label('File content')).to_have_value('before')
             page.get_by_label('File content').fill('after');page.get_by_role('button',name='Save changes',exact=True).click()
-            expect(page.get_by_role('status')).to_contain_text('saved')
+            expect(page.get_by_role('status')).to_contain_text('File saved; backup retained')
             assert (root/'settings.txt').read_text()=='after'
             page.get_by_role('button',name='Close editor',exact=True).click()
             page.get_by_role('button',name='Edit settings.txt',exact=True).click()
