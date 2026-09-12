@@ -1,0 +1,28 @@
+[Unit]
+Description=Game Server Panel
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/game-server-panel
+Environment=PANEL_CONFIG=/opt/game-server-panel/config.json
+ExecStart=/opt/game-server-panel/.venv/bin/gunicorn --config /opt/game-server-panel/gunicorn.conf.py --bind 127.0.0.1:9130 panel:create_app()
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ProtectKernelTunables=true
+ProtectControlGroups=true
+LockPersonality=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallArchitectures=native
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/opt/game-server-panel/state /srv/game-server/mods
+
+[Install]
+WantedBy=default.target

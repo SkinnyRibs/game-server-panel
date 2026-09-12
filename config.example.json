@@ -1,0 +1,29 @@
+{
+  "ALLOWED_ORIGIN": "https://panel.example.com",
+  "DATABASE": "/opt/game-server-panel/state/panel.db",
+  "BACKUP_DIR": "/opt/game-server-panel/state/backups",
+  "DOCKER_SOCKET": "/var/run/docker.sock",
+  "TRUSTED_PROXY_NETWORKS": [],
+  "SERVERS": {
+    "game-server": {
+      "container": "replace-with-your-game-container-name",
+      "label": "Game Server",
+      "expected": "running"
+    },
+    "metrics-sidecar": {
+      "container": "replace-with-an-infrastructure-container-name",
+      "label": "Infrastructure Service",
+      "expected": "running",
+      "readonly": true
+    }
+  },
+  "ROOTS": {
+    "game-data": {
+      "server": "game-server",
+      "label": "Game mods",
+      "path": "/srv/game-server/mods",
+      "extensions": [".jar", ".zip", ".json", ".yaml", ".yml", ".toml", ".cfg", ".ini", ".txt"],
+      "deny_paths": ["logs", "backups", "crash-reports", "saves/private"]
+    }
+  }
+}

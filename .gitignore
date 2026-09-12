@@ -1,0 +1,13 @@
+.venv/
+.browsers/
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+config.json
+docker-discovery*.json
+admin-password*
+server-panel.service
+state/
+test-results/
+.env
