@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 import time
 import urllib.request
 import urllib.error
@@ -8,7 +9,7 @@ from pathlib import Path
 def test_gunicorn_loopback_serves_real_app(tmp_path):
     assert Path('gunicorn.conf.py').exists(), 'gunicorn deployment config missing'
     env={**os.environ,'PANEL_DATABASE':str(tmp_path/'db'),'PANEL_ORIGIN':'http://127.0.0.1:9140'};env.pop('PANEL_CONFIG',None)
-    process=subprocess.Popen(['.venv/bin/gunicorn','--config','gunicorn.conf.py','--bind','127.0.0.1:9140','panel:create_app()'],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+    process=subprocess.Popen([sys.executable,'-m','gunicorn','--config','gunicorn.conf.py','--bind','127.0.0.1:9140','panel:create_app()'],env=env,stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
     try:
         for _ in range(100):
             if process.poll() is not None: raise AssertionError(process.stderr.read().decode())

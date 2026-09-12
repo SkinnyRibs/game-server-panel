@@ -12,10 +12,10 @@ def test_login_origin_and_password_rotation(setup):
     assert c.post('/api/login',json={'username':'owner','password':'new-test-password-123'},headers={'Origin':h['Origin']}).status_code==200
 
 def test_local_bootstrap_cli(tmp_path):
-    import os,subprocess
+    import os,subprocess,sys
     password=tmp_path/'password'; password.write_text('local-test-password-123\n'); password.chmod(0o600)
     db=tmp_path/'db'
-    r=subprocess.run(['.venv/bin/python','cli.py','createadmin','--username','admin','--password-file',str(password)],env={**os.environ,'PANEL_DATABASE':str(db),'PANEL_ORIGIN':'https://panel.example.com'},capture_output=True,text=True)
+    r=subprocess.run([sys.executable,'cli.py','createadmin','--username','admin','--password-file',str(password)],env={**os.environ,'PANEL_DATABASE':str(db),'PANEL_ORIGIN':'https://panel.example.com'},capture_output=True,text=True)
     assert r.returncode==0,r.stderr
     assert 'local-test-password' not in r.stdout+r.stderr
     from panel import create_app
